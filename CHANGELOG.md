@@ -6,6 +6,22 @@ All notable changes to pycordis are listed here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-11
+
+### Changed
+
+- New README: a 20-line quickstart, a real agent example, a comparison table
+  and an FAQ. Every README program runs in the test suite and must print its
+  documented output, and the config example must produce the documented
+  `pycordis doctor` output.
+- The full feature documentation moved to `docs/reference.md`.
+- The distribution is published as `pycordis-framework`; the import name stays
+  `pycordis`.
+
+### Fixed
+
+- Two wall-clock bounds in the test suite tolerate slow CI runners.
+
 ## [0.1.0] - 2026-11-10
 
 First public release.

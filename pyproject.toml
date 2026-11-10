@@ -1,6 +1,6 @@
 [project]
 name = "pycordis-framework"
-version = "0.1.0"
+version = "0.1.1"
 description = "Zero-dependency asyncio plugin framework, a Python port of cordis"
 readme = "README.md"
 requires-python = ">=3.12"

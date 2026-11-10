@@ -123,15 +123,56 @@ def test_readme_doctor_example_prints_its_documented_diagnosis(
     assert capsys.readouterr().out == output
 
 
-def test_readme_example_prints_its_documented_output(capsys: pytest.CaptureFixture[str]) -> None:
-    text = (ROOT / "README.md").read_text("utf-8")
-    program = re.search(r"^```python\n(import asyncio\n.*?)^```$", text, re.S | re.M)
-    output = re.search(r"^```text\n(\'hi\'.*?)^```$", text, re.S | re.M)
-    assert program and output
-    module = types.ModuleType("readme_example")
-    sys.modules[module.__name__] = module
-    try:
-        exec(compile(program.group(1), "README.md", "exec"), module.__dict__)
-    finally:
-        del sys.modules[module.__name__]
+def _readme() -> str:
+    return (ROOT / "README.md").read_text("utf-8")
+
+
+def _readme_programs() -> list[tuple[str, str]]:
+    """Each complete README program with the ``text`` block that follows it (its output)."""
+    pairs: list[tuple[str, str]] = re.findall(
+        r"^```python\n(import asyncio\n.*?)^```\n\n```text\n(.*?)^```$", _readme(), re.S | re.M
+    )
+    return pairs
+
+
+def test_readme_programs_print_their_documented_output(capsys: pytest.CaptureFixture[str]) -> None:
+    programs = _readme_programs()
+    assert len(programs) == 2  # the quickstart and "A real agent"
+    for number, (program, output) in enumerate(programs):
+        module = types.ModuleType(f"readme_example_{number}")
+        sys.modules[module.__name__] = module
+        try:
+            exec(compile(program, "README.md", "exec"), module.__dict__)
+        finally:
+            del sys.modules[module.__name__]
+        assert capsys.readouterr().out == output
+
+
+def test_readme_config_example_doctor_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    from pycordis import cli
+
+    text = _readme()
+    plugins = re.search(r"^```python\n(# my_agent\.py\n.*?)^```$", text, re.S | re.M)
+    config = re.search(r"^```toml\n(# agent\.toml\n.*?)^```$", text, re.S | re.M)
+    doctor = r"^```text\n\$ pycordis doctor -c agent\.toml\n(.*?)^```$"
+    output = re.search(doctor, text, re.S | re.M)
+    assert plugins and config and output
+
+    class AsyncAnthropic:  # the README imports the real SDK; tests stay offline
+        def __init__(self, api_key: str) -> None:
+            self.api_key = api_key
+
+    anthropic = types.ModuleType("anthropic")
+    anthropic.__dict__["AsyncAnthropic"] = AsyncAnthropic
+    monkeypatch.setitem(sys.modules, "anthropic", anthropic)
+    module = types.ModuleType("my_agent")
+    monkeypatch.setitem(sys.modules, "my_agent", module)
+    exec(compile(plugins.group(1), "README.md", "exec"), module.__dict__)
+
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test-not-a-real-key")
+    path = tmp_path / "agent.toml"
+    path.write_text(config.group(1).replace("watch = true", "watch = false"), "utf-8")
+    assert cli.main(["doctor", "-c", str(path)]) == 1
     assert capsys.readouterr().out == output.group(1)
