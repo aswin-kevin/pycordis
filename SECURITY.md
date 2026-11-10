@@ -19,7 +19,7 @@ unless you ask otherwise.
 ## Scope
 
 pycordis has no runtime dependencies. Note the trust model described in the
-README's **Security notes**: config files can import and run code (`allow` is
+**Security notes** of [docs/reference.md](docs/reference.md): config files can import and run code (`allow` is
 not a sandbox), and the health server is unauthenticated and meant for
 localhost or a trusted network. Reports that a trusted config file can run
 code are expected behaviour, not vulnerabilities.

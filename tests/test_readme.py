@@ -1,4 +1,8 @@
-"""README examples must run; the quick start must match ``test_readme_quick_start`` exactly."""
+"""Documentation examples must run.
+
+The README's example must print its documented output. In docs/reference.md, the quick
+start must match ``test_readme_quick_start`` exactly and the other examples must run.
+"""
 
 import re
 import sys
@@ -10,10 +14,11 @@ from typing import cast
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
+REFERENCE = ROOT / "docs" / "reference.md"
 
 
 def _quick_start() -> str:
-    text = (ROOT / "README.md").read_text("utf-8")
+    text = REFERENCE.read_text("utf-8")
     match = re.search(r"## Quick start\n.*?```python\n(.*?)```", text, re.S)
     assert match
     return match.group(1)
@@ -35,14 +40,14 @@ def test_readme_quick_start_matches_test_body() -> None:
 async def test_readme_quick_start_runs() -> None:
     namespace: dict[str, object] = {"__name__": "readme_example"}
     code = _quick_start().replace("asyncio.run(main())", "")
-    exec(compile(code, "README.md", "exec"), namespace)
+    exec(compile(code, "docs/reference.md", "exec"), namespace)
     await cast(Callable[[], Awaitable[None]], namespace["main"])()
 
 
 async def test_readme_generator_plugin_example() -> None:
     from pycordis import Context
 
-    text = (ROOT / "README.md").read_text("utf-8")
+    text = REFERENCE.read_text("utf-8")
     match = re.search(r"```python\n(def watcher\(ctx, config\):\n.*?)```", text, re.S)
     assert match
     log: list[str] = []
@@ -62,7 +67,7 @@ async def test_readme_generator_plugin_example() -> None:
         "open_connection": open_connection,
         "start_timer": Timer,
     }
-    exec(compile(match.group(1), "README.md", "exec"), namespace)
+    exec(compile(match.group(1), "docs/reference.md", "exec"), namespace)
     async with Context() as root:
         fiber = await root.plugin(namespace["watcher"])
         assert log == []
@@ -72,7 +77,7 @@ async def test_readme_generator_plugin_example() -> None:
 
 def _programs() -> list[str]:
     """README python blocks that are complete programs, other than the quick start."""
-    text = (ROOT / "README.md").read_text("utf-8")
+    text = REFERENCE.read_text("utf-8")
     blocks: list[str] = re.findall(r"^```python\n(.*?)^```$", text, re.S | re.M)
     return [block for block in blocks if "asyncio.run(main())" in block][1:]
 
@@ -84,7 +89,7 @@ def test_readme_programs_run(capsys: pytest.CaptureFixture[str]) -> None:
         module = types.ModuleType(f"readme_program_{number}")
         sys.modules[module.__name__] = module
         try:
-            exec(compile(program, "README.md", "exec"), module.__dict__)
+            exec(compile(program, "docs/reference.md", "exec"), module.__dict__)
         finally:
             del sys.modules[module.__name__]
     assert capsys.readouterr().out == "echo: hi\nadd search\nremove search\n"
@@ -92,7 +97,7 @@ def test_readme_programs_run(capsys: pytest.CaptureFixture[str]) -> None:
 
 def _diagnostics_example() -> tuple[str, str, str]:
     """The plugin module, config file and ``pycordis doctor`` output of README Diagnostics."""
-    text = (ROOT / "README.md").read_text("utf-8")
+    text = REFERENCE.read_text("utf-8")
     section = re.search(r"^### Diagnostics\n(.*?)^The reason kinds are", text, re.S | re.M)
     assert section
     body = section.group(1)
@@ -110,9 +115,23 @@ def test_readme_doctor_example_prints_its_documented_diagnosis(
 
     plugins, config, output = _diagnostics_example()
     module = types.ModuleType("app_plugins")
-    exec(compile(plugins, "README.md", "exec"), module.__dict__)
+    exec(compile(plugins, "docs/reference.md", "exec"), module.__dict__)
     monkeypatch.setitem(sys.modules, "app_plugins", module)
     path = tmp_path / "app.toml"
     path.write_text(config, "utf-8")
     assert cli.main(["doctor", "-c", str(path)]) == 1
     assert capsys.readouterr().out == output
+
+
+def test_readme_example_prints_its_documented_output(capsys: pytest.CaptureFixture[str]) -> None:
+    text = (ROOT / "README.md").read_text("utf-8")
+    program = re.search(r"^```python\n(import asyncio\n.*?)^```$", text, re.S | re.M)
+    output = re.search(r"^```text\n(\'hi\'.*?)^```$", text, re.S | re.M)
+    assert program and output
+    module = types.ModuleType("readme_example")
+    sys.modules[module.__name__] = module
+    try:
+        exec(compile(program.group(1), "README.md", "exec"), module.__dict__)
+    finally:
+        del sys.modules[module.__name__]
+    assert capsys.readouterr().out == output.group(1)

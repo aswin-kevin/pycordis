@@ -64,7 +64,7 @@ cordis counterpart; most are collected at the end in
 | `fiber.await()` | `await fiber.wait()` (or `await fiber`) | Returns the fiber or raises the load error. |
 | `fiber.dispose()` | `fiber.dispose()` | Returns an `asyncio.Future`. |
 | `fiber.restart()` | `await fiber.restart()` | |
-| `fiber.update(config, noSave?)` | `fiber.update(config, no_save=False)` | Volatile-only changes bypass `internal/update`. Pass raw config (see README secrets note). |
+| `fiber.update(config, noSave?)` | `fiber.update(config, no_save=False)` | Volatile-only changes bypass `internal/update`. Pass raw config (see the secrets note in [reference.md](reference.md)). |
 | `fiber.effect(execute, label)` | `fiber.effect(execute, label="anonymous")` | Accepts disposers, awaitables, (async) generators and (async) context managers. |
 | `fiber.getEffects()` | `fiber.get_effects()` | |
 | `fiber.assertActive()` | `fiber.assert_active()` | |
@@ -177,7 +177,7 @@ Timers are fiber-owned and raise `INACTIVE_EFFECT` on unloading fibers.
 
 ## Loader (replaces cordis-plugin-loader / include)
 
-Python-native design with the same model; see the README for the file format.
+Python-native design with the same model; see [reference.md](reference.md) for the file format.
 
 | Item | pycordis |
 | --- | --- |
@@ -191,7 +191,7 @@ Python-native design with the same model; see the README for the file format.
 
 ## pycordis-only additions
 
-Everything here is new in pycordis; cordis 4.1.0 has no counterpart. The README
+Everything here is new in pycordis; cordis 4.1.0 has no counterpart. [reference.md](reference.md)
 documents each one, and [guide-agents.md](guide-agents.md) uses most of them
 together.
 
