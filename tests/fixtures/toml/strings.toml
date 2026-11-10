@@ -1,0 +1,15 @@
+basic = "tab\there \"quoted\" \u00e9 \\ end"
+literal = 'C:\path\no escapes'
+multi_basic = """
+Roses are red
+  "Violets" are \
+  blue"""
+multi_literal = '''
+first line
+  # not a comment
+second ''line'' '''
+quotes_end = """ends with quotes"""""
+lit_quotes_end = '''ends''''
+empty = ""
+empty_lit = ''
+hash_inside = "# not a comment" # real comment

@@ -1,0 +1,5 @@
+[loader]
+allow = ["clifix"]
+
+[[plugins]]
+use = "clifix:hang"

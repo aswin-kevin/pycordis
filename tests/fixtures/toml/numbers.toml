@@ -1,0 +1,15 @@
+int1 = +99
+int2 = -17
+int3 = 1_000
+hex = 0xDEAD_beef
+oct = 0o755
+bin = 0b1101
+flt1 = +1.0
+flt2 = -0.01
+flt3 = 5e+22
+flt4 = 6.626e-34
+flt5 = 224_617.445_991
+infs = [inf, +inf, -inf]
+nans = [nan, +nan, -nan]
+bool1 = true
+bool2 = false

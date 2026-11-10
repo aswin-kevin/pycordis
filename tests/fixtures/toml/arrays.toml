@@ -1,0 +1,19 @@
+integers = [ 1, 2, 3 ]
+colors = [ "red", "yellow", "green" ]
+nested = [ [ 1, 2 ], ["a", 'b', """c"""] ]
+mixed = [ 0.1, 0.2, 0.5, 1, 2, 5 ]
+multi = [
+  1,  # one
+  2,
+  # a comment line
+  3,
+]
+no_trailing = [
+  "a",
+  "b"
+]
+empty = []
+empty_ml = [
+  # nothing here
+]
+tight=[1,2,3]

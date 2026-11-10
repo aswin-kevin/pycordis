@@ -1,0 +1,6 @@
+[loader]
+allow = ["clifix"]
+
+[[plugins]]
+id = "stall"
+use = "clifix:stall"

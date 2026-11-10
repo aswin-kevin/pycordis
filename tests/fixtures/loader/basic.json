@@ -1,0 +1,36 @@
+{
+  "loader": {
+    "readonly": true,
+    "watch": true,
+    "allow": ["my_agent.*", "pycordis.*"],
+    "poll_interval": 0.5
+  },
+  "plugins": [
+    {
+      "id": "llm",
+      "use": "my_agent.services:OpenAIClient",
+      "config": { "model": "gpt-x", "api_key": "${env:OPENAI_API_KEY}" }
+    },
+    {
+      "use": "my_agent.tools:search",
+      "disabled": true,
+      "isolate": ["cache"],
+      "intercept": { "logger": { "level": 3 } },
+      "inject": ["llm_client"]
+    },
+    {
+      "use": "my_agent.tools:search",
+      "isolate": { "cache": "shared", "db": "main" }
+    },
+    {
+      "group": "channels",
+      "inject": ["llm"],
+      "plugins": [
+        { "use": "my_agent.channels:slack", "config": { "token": "x" } },
+        { "use": "my_agent.channels:slack" },
+        { "id": "irc", "use": "my_agent.channels:irc" }
+      ]
+    },
+    { "include": "./sub/extra.toml", "disabled": true }
+  ]
+}

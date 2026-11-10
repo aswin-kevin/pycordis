@@ -1,0 +1,10 @@
+[loader]
+allow = ["clifix"]
+
+[[plugins]]
+id = "store"
+use = "clifix:Store"
+
+[[plugins]]
+id = "probe"
+use = "clifix:probe_health"

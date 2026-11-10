@@ -1,0 +1,12 @@
+# windows file
+title = "crlf"
+
+[server]
+host = "localhost"  # comment
+ports = [
+  80,
+  443,
+]
+text = """
+line one
+line two"""

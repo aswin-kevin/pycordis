@@ -1,0 +1,11 @@
+# Included file: entries here are written back to this file.
+[[plugins]]
+use = "my_agent.extra:one"
+config = { key = "${file:secret.txt}" }
+
+[[plugins]]
+group = "nested"
+
+[[plugins.plugins]]
+use = "my_agent.extra:two"
+config = { n = 1 }

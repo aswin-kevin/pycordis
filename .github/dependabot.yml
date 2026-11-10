@@ -1,0 +1,8 @@
+# Keeps the SHA-pinned GitHub Actions current. pycordis has no runtime
+# dependencies; dev tools are locked in uv.lock and updated deliberately.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

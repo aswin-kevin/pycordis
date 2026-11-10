@@ -1,0 +1,20 @@
+[loader]
+allow = ["clifix"]
+
+[[plugins]]
+id = "store"
+use = "clifix:Store"
+config = { label = "${env:CLIFIX_LABEL:-main}" }
+
+[[plugins]]
+id = "consumer"
+use = "clifix:consumer"
+
+[[plugins]]
+group = "extras"
+plugins = [{ id = "ready", use = "clifix:ready" }]
+
+[[plugins]]
+id = "off"
+use = "clifix:missing"
+disabled = true

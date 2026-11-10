@@ -1,0 +1,6 @@
+name = { first = "Tom", last = "Preston-Werner" }
+point = {x=1,y=2}
+nested = { outer = { inner = { leaf = "v", list = [1, 2] } }, sibling = true }
+empty = {}
+dotted = { a.b = 1, a.c = 2 }
+arr = [ { id = 1 }, { id = 2, tags = ["x"] } ]

@@ -1,0 +1,9 @@
+[loader]
+allow = ["clifix"]
+
+[[plugins]]
+use = "clifix:ready"
+
+[[plugins]]
+use = "clifix:send_signals"
+config = { signals = ["SIGTERM"] }

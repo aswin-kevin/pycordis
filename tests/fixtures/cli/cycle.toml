@@ -1,0 +1,14 @@
+[loader]
+allow = ["clifix"]
+
+[[plugins]]
+id = "store"
+use = "clifix:Store"
+
+[[plugins]]
+id = "agent"
+use = "clifix:agent"
+
+[[plugins]]
+id = "llm"
+use = "clifix:llm"

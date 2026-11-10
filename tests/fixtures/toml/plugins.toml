@@ -1,0 +1,9 @@
+# top comment
+[[plugins]]
+use = "a:b"   # trailing
+config = { model = "x", n = 1 }
+
+[[plugins]]
+use = "c:d"
+[plugins.config]
+key = 'single'  # keep me

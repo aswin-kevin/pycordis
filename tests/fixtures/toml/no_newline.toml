@@ -1,0 +1,4 @@
+# no trailing newline
+key = "value"
+[t]
+last = 1

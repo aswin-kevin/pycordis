@@ -1,0 +1,20 @@
+[loader]
+allow = ["clifix"]
+
+[[plugins]]
+id = "store"
+use = "clifix:Store"
+config = { label = 5 }
+
+[[plugins]]
+id = "consumer"
+use = "clifix:consumer"
+inject = ["nothing"]
+
+[[plugins]]
+id = "denied"
+use = "os:getcwd"
+
+[[plugins]]
+id = "missing"
+use = "clifix:missing"

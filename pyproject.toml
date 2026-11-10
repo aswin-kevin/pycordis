@@ -1,0 +1,80 @@
+[project]
+name = "pycordis"
+version = "0.1.0"
+description = "Zero-dependency asyncio plugin framework, a Python port of cordis"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "aswin", email = "aswinvenkat60@gmail.com" }]
+keywords = ["plugin", "framework", "dependency-injection", "asyncio", "cordis", "services", "agents", "llm"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/aswin-kevin/pycordis"
+Documentation = "https://github.com/aswin-kevin/pycordis#readme"
+Repository = "https://github.com/aswin-kevin/pycordis"
+Issues = "https://github.com/aswin-kevin/pycordis/issues"
+Changelog = "https://github.com/aswin-kevin/pycordis/blob/main/CHANGELOG.md"
+
+[project.scripts]
+pycordis = "pycordis.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pycordis"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/pycordis", "tests", "docs", "README.md", "CHANGELOG.md", "SECURITY.md", "LICENSE", "pyproject.toml"]
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "pytest-cov>=5", "pyright>=1.1.380", "ruff>=0.6"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = ["error"]
+testpaths = ["tests"]
+
+[tool.pyright]
+include = ["src", "tests", "bench"]
+# deliberate type errors, checked by tests/test_typing_contracts.py
+exclude = ["tests/typing_fixtures"]
+typeCheckingMode = "strict"
+pythonVersion = "3.12"
+venvPath = "."
+venv = ".venv"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["docs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.coverage.run]
+source = ["pycordis"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "\\.\\.\\.$"]
