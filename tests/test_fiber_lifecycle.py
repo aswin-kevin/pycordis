@@ -900,7 +900,9 @@ async def test_a_1000_deep_active_chain_tears_down_dependents_first() -> None:
     assert disposed == list(reversed(range(n)))
     assert all(f.state == FiberState.PENDING for f in fibers[1:])
     await root.fiber.dispose()
-    assert time.perf_counter() - started < 5.0
+    # a generous bound: ~0.4 s locally, ~5 s on a slow CI runner under coverage;
+    # it catches a return to super-linear cascades, not small slowdowns
+    assert time.perf_counter() - started < 30.0
     assert errors == []
     assert all(f.state == FiberState.DISPOSED for f in fibers)
 

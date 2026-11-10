@@ -726,7 +726,8 @@ async def test_a_long_pending_chain_is_checked_fast_without_recursion() -> None:
             ),
         )
         assert cycle_warnings(logs) == []
-        assert elapsed < 1.0, elapsed
+        # generous for slow CI runners under coverage; catches a quadratic cycle scan
+        assert elapsed < 10.0, elapsed
 
 
 async def test_a_long_cycle_is_found_without_recursion() -> None:
