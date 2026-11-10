@@ -1,5 +1,5 @@
 [project]
-name = "pycordis"
+name = "pycordis-framework"
 version = "0.1.0"
 description = "Zero-dependency asyncio plugin framework, a Python port of cordis"
 readme = "README.md"

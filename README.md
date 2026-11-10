@@ -22,8 +22,11 @@ and testing helpers.
 ## Install
 
 ```sh
-pip install pycordis        # or: uv add pycordis
+pip install pycordis-framework        # or: uv add pycordis-framework
 ```
+
+The distribution is named `pycordis-framework`; the package you import is
+`pycordis` (`import pycordis`) and the command is `pycordis`.
 
 Optional: PyYAML enables `.yaml` / `.yml` loader config files. TOML (`tomllib`)
 and JSON are built in.
